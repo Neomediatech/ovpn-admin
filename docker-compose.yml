@@ -1,0 +1,45 @@
+# use to create a compose stack template in Portainer
+# STACK_BASE_PATH [base folder where to host files, must exists]
+# STACK_BASE_PATH=/srv/ovpn-admin ; grep device roundcube-stack-4-compose.yml|grep -v "#"|awk '{print $2}'|while read dir; do eval mkdir -p $dir; done
+
+version: '3.7'
+
+x-default-opts: 
+  &default-opts
+  restart: unless-stopped
+
+x-environment: &common-vars
+    TZ: "Europe/Rome"
+
+services:
+  ovpn-admin:
+    #image: neomediatech/ovpn-admin:latest
+    image: ovpn-admin
+    container_name: ovpn-admin
+    hostname: ovpn-admin
+    <<: *default-opts    
+    ports:
+      - 8080:8080
+    volumes:
+      - openvpn:/data/openvpn
+      - /etc/mime.types:/etc/mime.types:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/locale.gen:/etc/locale.gen:ro
+    environment:
+      << : *common-vars
+      OVPN_MGMT: "${OVPN_MGMT:-main=10.2.0.200:8989}"
+      EASYRSA_CERT_EXPIRE: "${EASYRSA_CERT_EXPIRE:-9999}"
+      EASYRSA_CA_EXPIRE: "${EASYRSA_CA_EXPIRE:-36500}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  openvpn:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /etc/openvpn
+
+
