@@ -13,8 +13,7 @@ x-environment: &common-vars
 
 services:
   ovpn-admin:
-    #image: neomediatech/ovpn-admin:latest
-    image: ovpn-admin
+    image: neomediatech/ovpn-admin:latest
     container_name: ovpn-admin
     hostname: ovpn-admin
     <<: *default-opts    
