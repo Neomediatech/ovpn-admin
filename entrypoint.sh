@@ -13,8 +13,9 @@ if [ ! -d /data/openvpn/easyrsa/pki ]; then
   easyrsa gen-crl
   chmod 755 pki/
   chmod 644 pki/crl.pem
-  mkdir -p /etc/openvpn/ccd
   cd /data/openvpn
 fi
+
+[ -n "$OVPN_CCD_PATH" ] && mkdir -p "$OVPN_CCD_PATH" || ok=1
 
 exec "$@"
