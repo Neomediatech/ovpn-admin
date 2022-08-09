@@ -30,6 +30,8 @@ services:
       OVPN_MGMT: "${OVPN_MGMT:-main=10.2.0.200:8989}"
       EASYRSA_CERT_EXPIRE: "${EASYRSA_CERT_EXPIRE:-9999}"
       EASYRSA_CA_EXPIRE: "${EASYRSA_CA_EXPIRE:-36500}"
+      OVPN_CCD: "${OVPN_CCD:-True}"
+      OVPN_CCD_PATH: "${OVPN_CCD_PATH:-/etc/openvpn/ccd}"
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
